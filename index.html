@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:">
     <title>Discord Bio - Fully Customizable</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tailwind via CDN with fallback -->
+    <script src="https://cdn.tailwindcss.com" onerror="this.remove(); document.write('<style>' + tailwindFallback + '</style>')"></script>
+    <!-- Font Awesome with multiple fallbacks -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
-        
+        /* Critical CSS Fallback if Tailwind fails */
         :root {
             --bg-primary: #0a0a0a;
-            --bg-secondary: rgba(20, 20, 20, 0.6);
+            --bg-secondary: rgba(20, 20, 20, 0.8);
             --bg-glass: rgba(255, 255, 255, 0.05);
             --text-primary: #ffffff;
             --text-secondary: #a1a1aa;
@@ -19,7 +21,7 @@
             --accent-secondary: #ef4444;
             --accent-glow: rgba(220, 38, 38, 0.3);
             --border-color: rgba(255, 255, 255, 0.1);
-            --font-main: 'Inter', sans-serif;
+            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             --card-radius: 24px;
             
             /* Glow Animation Variables */
@@ -35,15 +37,263 @@
         }
         
         * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
             font-family: var(--font-main);
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
         
-        body {
+        html, body {
+            width: 100%;
+            min-height: 100vh;
             background-color: var(--bg-primary);
             color: var(--text-primary);
             overflow-x: hidden;
         }
+        
+        /* Tailwind-like Utility Classes */
+        .fixed { position: fixed; }
+        .absolute { position: absolute; }
+        .relative { position: relative; }
+        .inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+        .top-0 { top: 0; }
+        .top-4 { top: 1rem; }
+        .right-0 { right: 0; }
+        .right-4 { right: 1rem; }
+        .bottom-2 { bottom: 0.5rem; }
+        .left-0 { left: 0; }
+        .z-0 { z-index: 0; }
+        .z-10 { z-index: 10; }
+        .z-40 { z-index: 40; }
+        .z-50 { z-index: 50; }
+        .z-\[1000\] { z-index: 1000; }
+        .z-\[2000\] { z-index: 2000; }
+        
+        .flex { display: flex; }
+        .grid { display: grid; }
+        .hidden { display: none; }
+        .block { display: block; }
+        .inline-flex { display: inline-flex; }
+        
+        .h-full { height: 100%; }
+        .h-screen { height: 100vh; }
+        .h-4 { height: 1rem; }
+        .h-6 { height: 1.5rem; }
+        .h-7 { height: 1.75rem; }
+        .h-8 { height: 2rem; }
+        .h-10 { height: 2.5rem; }
+        .h-12 { height: 3rem; }
+        .h-14 { height: 3.5rem; }
+        .h-16 { height: 4rem; }
+        .h-28 { height: 7rem; }
+        .h-32 { height: 8rem; }
+        .h-36 { height: 9rem; }
+        .h-60 { height: 15rem; }
+        
+        .w-full { width: 100%; }
+        .w-1 { width: 0.25rem; }
+        .w-4 { width: 1rem; }
+        .w-6 { width: 1.5rem; }
+        .w-7 { width: 1.75rem; }
+        .w-8 { width: 2rem; }
+        .w-10 { width: 2.5rem; }
+        .w-12 { width: 3rem; }
+        .w-14 { width: 3.5rem; }
+        .w-16 { width: 4rem; }
+        .w-20 { width: 5rem; }
+        .w-24 { width: 6rem; }
+        .w-28 { width: 7rem; }
+        .w-80 { width: 20rem; }
+        .w-\[420px\] { width: 420px; }
+        .w-\[500px\] { width: 500px; }
+        .max-w-\[90vw\] { max-width: 90vw; }
+        .max-w-md { max-width: 28rem; }
+        
+        .min-h-screen { min-height: 100vh; }
+        .min-w-0 { min-width: 0; }
+        
+        .flex-1 { flex: 1 1 0%; }
+        .flex-shrink-0 { flex-shrink: 0; }
+        
+        .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        
+        .flex-col { flex-direction: column; }
+        .flex-wrap { flex-wrap: wrap; }
+        .items-end { align-items: flex-end; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .justify-between { justify-content: space-between; }
+        .gap-1 { gap: 0.25rem; }
+        .gap-2 { gap: 0.5rem; }
+        .gap-3 { gap: 0.75rem; }
+        .gap-4 { gap: 1rem; }
+        
+        .space-y-2 > * + * { margin-top: 0.5rem; }
+        .space-y-3 > * + * { margin-top: 0.75rem; }
+        .space-y-4 > * + * { margin-top: 1rem; }
+        .space-y-6 > * + * { margin-top: 1.5rem; }
+        
+        .overflow-hidden { overflow: hidden; }
+        .overflow-x-hidden { overflow-x: hidden; }
+        .overflow-y-auto { overflow-y: auto; }
+        
+        .rounded { border-radius: 0.25rem; }
+        .rounded-lg { border-radius: 0.5rem; }
+        .rounded-xl { border-radius: 0.75rem; }
+        .rounded-2xl { border-radius: 1rem; }
+        .rounded-full { border-radius: 9999px; }
+        
+        .border { border-width: 1px; }
+        .border-b { border-bottom-width: 1px; }
+        .border-l { border-left-width: 1px; }
+        .border-2 { border-width: 2px; }
+        
+        .border-white\/5 { border-color: rgba(255, 255, 255, 0.05); }
+        .border-white\/10 { border-color: rgba(255, 255, 255, 0.1); }
+        
+        .bg-black { background-color: #000; }
+        .bg-black\/30 { background-color: rgba(0, 0, 0, 0.3); }
+        .bg-black\/50 { background-color: rgba(0, 0, 0, 0.5); }
+        .bg-black\/60 { background-color: rgba(0, 0, 0, 0.6); }
+        .bg-white { background-color: #fff; }
+        .bg-white\/5 { background-color: rgba(255, 255, 255, 0.05); }
+        .bg-white\/10 { background-color: rgba(255, 255, 255, 0.1); }
+        .bg-red-400 { background-color: #f87171; }
+        .bg-red-500 { background-color: #ef4444; }
+        .bg-red-500\/10 { background-color: rgba(239, 68, 68, 0.1); }
+        .bg-green-400 { background-color: #4ade80; }
+        .bg-blue-400 { background-color: #60a5fa; }
+        .bg-violet-500 { background-color: #8b5cf6; }
+        .bg-violet-600 { background-color: #7c3aed; }
+        .bg-violet-600\/20 { background-color: rgba(124, 58, 237, 0.2); }
+        .bg-fuchsia-500 { background-color: #d946ef; }
+        .bg-gradient-to-r { background-image: linear-gradient(to right, var(--tw-gradient-stops)); }
+        .bg-gradient-to-br { background-image: linear-gradient(to bottom right, var(--tw-gradient-stops)); }
+        .bg-gradient-to-b { background-image: linear-gradient(to bottom, var(--tw-gradient-stops)); }
+        
+        .from-violet-500 { --tw-gradient-from: #8b5cf6; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(139, 92, 246, 0)); }
+        .from-fuchsia-500 { --tw-gradient-from: #d946ef; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 70, 239, 0)); }
+        .from-red-600 { --tw-gradient-from: #dc2626; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(220, 38, 38, 0)); }
+        .from-blue-600 { --tw-gradient-from: #2563eb; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(37, 99, 235, 0)); }
+        .from-emerald-600 { --tw-gradient-from: #059669; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(5, 150, 105, 0)); }
+        .from-amber-600 { --tw-gradient-from: #d97706; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(217, 119, 6, 0)); }
+        .from-pink-600 { --tw-gradient-from: #db2777; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(219, 39, 119, 0)); }
+        .from-slate-700 { --tw-gradient-from: #334155; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(51, 65, 85, 0)); }
+        .from-indigo-600 { --tw-gradient-from: #4f46e5; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(79, 70, 229, 0)); }
+        .from-pink-500 { --tw-gradient-from: #ec4899; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(236, 72, 153, 0)); }
+        .from-zinc-900 { --tw-gradient-from: #18181b; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(24, 24, 27, 0)); }
+        .from-transparent { --tw-gradient-from: transparent; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, transparent); }
+        
+        .via-black { --tw-gradient-stops: var(--tw-gradient-from), #000, var(--tw-gradient-to, rgba(0, 0, 0, 0)); }
+        
+        .to-fuchsia-500 { --tw-gradient-to: #d946ef; }
+        .to-orange-600 { --tw-gradient-to: #ea580c; }
+        .to-cyan-600 { --tw-gradient-to: #0891b2; }
+        .to-teal-600 { --tw-gradient-to: #0d9488; }
+        .to-yellow-600 { --tw-gradient-to: #ca8a04; }
+        .to-rose-600 { --tw-gradient-to: #e11d48; }
+        .to-slate-900 { --tw-gradient-to: #0f172a; }
+        .to-purple-600 { --tw-gradient-to: #9333ea; }
+        .to-rose-600 { --tw-gradient-to: #e11d48; }
+        .to-black { --tw-gradient-to: #000; }
+        
+        .object-cover { object-fit: cover; }
+        .object-contain { object-fit: contain; }
+        
+        .p-1 { padding: 0.25rem; }
+        .p-1\.5 { padding: 0.375rem; }
+        .p-2 { padding: 0.5rem; }
+        .p-3 { padding: 0.75rem; }
+        .p-4 { padding: 1rem; }
+        .p-6 { padding: 1.5rem; }
+        .p-8 { padding: 2rem; }
+        
+        .px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+        .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+        
+        .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+        .py-1\.5 { padding-top: 0.375rem; padding-bottom: 0.375rem; }
+        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+        .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+        
+        .pb-6 { padding-bottom: 1.5rem; }
+        .pt-4 { padding-top: 1rem; }
+        
+        .text-center { text-align: center; }
+        
+        .text-\[10px\] { font-size: 10px; }
+        .text-xs { font-size: 0.75rem; line-height: 1rem; }
+        .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+        .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+        .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+        .text-2xl { font-size: 1.5rem; line-height: 2rem; }
+        .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+        
+        .font-medium { font-weight: 500; }
+        .font-semibold { font-weight: 600; }
+        .font-bold { font-weight: 700; }
+        
+        .uppercase { text-transform: uppercase; }
+        
+        .tracking-wider { letter-spacing: 0.05em; }
+        .tracking-widest { letter-spacing: 0.1em; }
+        
+        .text-white { color: #fff; }
+        .text-black { color: #000; }
+        .text-red-400 { color: #f87171; }
+        .text-green-400 { color: #4ade80; }
+        .text-blue-400 { color: #60a5fa; }
+        .text-violet-400 { color: #a78bfa; }
+        .text-violet-500 { color: #8b5cf6; }
+        
+        .placeholder\:opacity-50::placeholder { opacity: 0.5; }
+        
+        .opacity-0 { opacity: 0; }
+        .opacity-30 { opacity: 0.3; }
+        .opacity-50 { opacity: 0.5; }
+        .opacity-60 { opacity: 0.6; }
+        .opacity-70 { opacity: 0.7; }
+        .opacity-80 { opacity: 0.8; }
+        
+        .backdrop-blur-sm { backdrop-filter: blur(4px); }
+        .backdrop-blur-xl { backdrop-filter: blur(24px); }
+        
+        .transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+        .transition-colors { transition-property: background-color, border-color, color, fill, stroke; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+        .transition-opacity { transition-property: opacity; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+        .transition-transform { transition-property: transform; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+        .duration-300 { transition-duration: 300ms; }
+        .duration-500 { transition-duration: 500ms; }
+        
+        .hover\:bg-white\/10:hover { background-color: rgba(255, 255, 255, 0.1); }
+        .hover\:bg-white\/20:hover { background-color: rgba(255, 255, 255, 0.2); }
+        .hover\:bg-red-500\/10:hover { background-color: rgba(239, 68, 68, 0.1); }
+        .hover\:bg-violet-700:hover { background-color: #6d28d9; }
+        .hover\:text-white:hover { color: #fff; }
+        .hover\:text-red-300:hover { color: #fca5a5; }
+        .hover\:text-violet-300:hover { color: #c4b5fd; }
+        .hover\:opacity-90:hover { opacity: 0.9; }
+        .hover\:opacity-100:hover { opacity: 1; }
+        
+        .focus\:border-violet-500:focus { border-color: #8b5cf6; }
+        .focus\:outline-none:focus { outline: 2px solid transparent; outline-offset: 2px; }
+        
+        .cursor-pointer { cursor: pointer; }
+        
+        .resize-none { resize: none; }
+        
+        .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        
+        .animate-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        .animate-\[bounce_1s_infinite\] { animation: bounce 1s infinite; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: var(--accent-primary); border-radius: 4px; }
         
         /* 3D Card */
         .card-container {
@@ -57,6 +307,7 @@
             will-change: transform;
             background: var(--bg-secondary);
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--border-color);
             border-radius: var(--card-radius);
             box-shadow: 0 0 40px var(--accent-glow);
@@ -74,19 +325,8 @@
         .glass {
             background: var(--bg-glass);
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--border-color);
-        }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--bg-primary);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--accent-primary);
-            border-radius: 4px;
         }
         
         /* Animations */
@@ -100,15 +340,19 @@
             100% { transform: scale(2.5); opacity: 0; }
         }
         
-        @keyframes gradient-shift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
         @keyframes spin-slow {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(-25%); animation-timing-function: cubic-bezier(0.8, 0, 1, 1); }
+            50% { transform: translateY(0); animation-timing-function: cubic-bezier(0, 0, 0.2, 1); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
         
         /* CUSTOMIZABLE GLOW LOOP */
@@ -208,6 +452,7 @@
             overflow: hidden;
             border: 2px solid var(--border-color);
             cursor: pointer;
+            flex-shrink: 0;
         }
         
         input[type="color"] {
@@ -241,6 +486,15 @@
             border: 2px solid var(--text-primary);
         }
         
+        input[type="range"]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent-primary);
+            cursor: pointer;
+            border: 2px solid var(--text-primary);
+        }
+        
         /* Toggle Switch */
         .toggle {
             position: relative;
@@ -250,6 +504,7 @@
             border-radius: 13px;
             cursor: pointer;
             transition: background 0.3s;
+            flex-shrink: 0;
         }
         
         .toggle.active {
@@ -310,6 +565,7 @@
             inset: 0;
             background: rgba(0,0,0,0.9);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             z-index: 2000;
             display: flex;
             align-items: center;
@@ -393,15 +649,37 @@
             border: 2px solid;
             margin-top: 10px;
         }
+        
+        /* Input Styling */
+        input, textarea, select {
+            color: var(--text-primary);
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            width: 100%;
+            transition: border-color 0.2s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #8b5cf6;
+        }
+        
+        /* Ensure visibility */
+        #mainCard, #dynamicBg, .profile-card {
+            display: block !important;
+            visibility: visible !important;
+        }
     </style>
-<base target="_blank">
 </head>
-<body>
+<body class="min-h-screen flex items-center justify-center">
 
     <!-- Dynamic Background -->
     <div id="dynamicBg" class="dynamic-bg">
-        <div class="absolute inset-0 bg-gradient-to-br from-zinc-900 via-black to-black"></div>
-        <div id="bgOverlay" class="absolute inset-0 opacity-30"></div>
+        <div style="position: absolute; inset: 0; background: linear-gradient(to bottom right, #18181b, #000, #000);"></div>
+        <div style="position: absolute; inset: 0; opacity: 0.3;"></div>
     </div>
 
     <!-- Admin Access Button -->
@@ -419,7 +697,7 @@
                 <h2 class="text-2xl font-bold mb-2">Admin Access</h2>
                 <p class="text-sm opacity-60">Enter your password to customize</p>
             </div>
-            <input type="password" id="adminPassword" placeholder="Password" class="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 mb-4 focus:outline-none focus:border-violet-500 text-center text-lg tracking-widest">
+            <input type="password" id="adminPassword" placeholder="Password" class="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 mb-4 focus:outline-none focus:border-violet-500 text-center text-lg tracking-widest" onkeypress="if(event.key==='Enter')checkPassword()">
             <button onclick="checkPassword()" class="w-full bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white font-semibold py-3 rounded-xl hover:opacity-90 transition-opacity">
                 Unlock
             </button>
@@ -443,32 +721,32 @@
             <div class="space-y-4">
                 <div>
                     <label class="text-xs mb-1 block opacity-70">Display Name</label>
-                    <input type="text" id="editName" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-violet-500 focus:outline-none" value="wh3g">
+                    <input type="text" id="editName" value="wh3g" oninput="updateText('displayName', this.value)">
                 </div>
                 
                 <div>
                     <label class="text-xs mb-1 block opacity-70">Username</label>
-                    <input type="text" id="editUsername" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-violet-500 focus:outline-none" value="@wh3g">
+                    <input type="text" id="editUsername" value="@wh3g" oninput="updateText('displayUsername', this.value)">
                 </div>
                 
                 <div>
                     <label class="text-xs mb-1 block opacity-70">Pronouns</label>
-                    <input type="text" id="editPronouns" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-violet-500 focus:outline-none" value="he/him">
+                    <input type="text" id="editPronouns" value="he/him" oninput="updateText('displayPronouns', this.value)">
                 </div>
                 
                 <div>
                     <label class="text-xs mb-1 block opacity-70">Bio / Status</label>
-                    <textarea id="editBio" rows="2" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-violet-500 focus:outline-none resize-none">Professional gamer | Content Creator</textarea>
+                    <textarea id="editBio" rows="2" oninput="updateText('displayBio', this.value)">Professional gamer | Content Creator</textarea>
                 </div>
                 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="text-xs mb-1 block opacity-70">Avatar URL</label>
-                        <input type="text" id="editAvatar" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-violet-500 focus:outline-none" placeholder="Image URL...">
+                        <input type="text" id="editAvatar" placeholder="Image URL..." onchange="updateImage('avatarImg', this.value)">
                     </div>
                     <div>
                         <label class="text-xs mb-1 block opacity-70">Banner URL</label>
-                        <input type="text" id="editBanner" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-violet-500 focus:outline-none" placeholder="Image URL...">
+                        <input type="text" id="editBanner" placeholder="Image URL..." onchange="updateImage('bannerImg', this.value)">
                     </div>
                 </div>
             </div>
@@ -528,7 +806,7 @@
                 
                 <div>
                     <label class="text-xs mb-2 block opacity-70">Background Style</label>
-                    <select id="bgStyle" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-violet-500 focus:outline-none" onchange="updateBgStyle()">
+                    <select id="bgStyle" onchange="updateBgStyle()">
                         <option value="gradient">Gradient Mesh</option>
                         <option value="solid">Solid Color</option>
                         <option value="image">Custom Image</option>
@@ -539,7 +817,7 @@
                 </div>
                 
                 <div id="bgImageInput" class="hidden">
-                    <input type="text" placeholder="Background image URL..." class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-violet-500 focus:outline-none mt-2" onchange="updateBgImage(this.value)">
+                    <input type="text" placeholder="Background image URL..." class="mt-2" onchange="updateBgImage(this.value)">
                 </div>
             </div>
         </div>
@@ -554,7 +832,7 @@
                     <div class="w-10 h-10 rounded bg-black/30 flex items-center justify-center overflow-hidden">
                         <img src="https://cdn.discordapp.com/badge-icons/ce155723d0f93a9ce9b27f423ee3f88d.png" class="w-8 h-8 object-contain badge-preview">
                     </div>
-                    <input type="text" placeholder="Badge PNG URL..." class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-xs" value="https://cdn.discordapp.com/badge-icons/ce155723d0f93a9ce9b27f423ee3f88d.png" onchange="updateBadgePreview(this)">
+                    <input type="text" placeholder="Badge PNG URL..." class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-xs" value="https://cdn.discordapp.com/badge-icons/ce155723d0f93a9ce9b27f423ee3f88d.png" onchange="updateBadgePreview(this); updateBadgesDisplay();">
                     <input type="text" placeholder="Alt text..." class="w-20 bg-white/5 border border-white/10 rounded px-2 py-1 text-xs" value="Crown">
                     <button onclick="removeBadge(this)" class="text-red-400 hover:text-red-300 w-8"><i class="fas fa-trash"></i></button>
                 </div>
@@ -580,27 +858,27 @@
                 <div class="grid grid-cols-3 gap-2">
                     <div>
                         <label class="text-[10px] opacity-70 block mb-1">Color 1</label>
-                        <input type="color" id="glowColor1" value="#ff0000" class="w-full h-8 rounded cursor-pointer" onchange="updateGlow()">
+                        <input type="color" id="glowColor1" value="#ff0000" onchange="updateGlow()">
                     </div>
                     <div>
                         <label class="text-[10px] opacity-70 block mb-1">Color 2</label>
-                        <input type="color" id="glowColor2" value="#ff8800" class="w-full h-8 rounded cursor-pointer" onchange="updateGlow()">
+                        <input type="color" id="glowColor2" value="#ff8800" onchange="updateGlow()">
                     </div>
                     <div>
                         <label class="text-[10px] opacity-70 block mb-1">Color 3</label>
-                        <input type="color" id="glowColor3" value="#ffff00" class="w-full h-8 rounded cursor-pointer" onchange="updateGlow()">
+                        <input type="color" id="glowColor3" value="#ffff00" onchange="updateGlow()">
                     </div>
                     <div>
                         <label class="text-[10px] opacity-70 block mb-1">Color 4</label>
-                        <input type="color" id="glowColor4" value="#00ff00" class="w-full h-8 rounded cursor-pointer" onchange="updateGlow()">
+                        <input type="color" id="glowColor4" value="#00ff00" onchange="updateGlow()">
                     </div>
                     <div>
                         <label class="text-[10px] opacity-70 block mb-1">Color 5</label>
-                        <input type="color" id="glowColor5" value="#0088ff" class="w-full h-8 rounded cursor-pointer" onchange="updateGlow()">
+                        <input type="color" id="glowColor5" value="#0088ff" onchange="updateGlow()">
                     </div>
                     <div>
                         <label class="text-[10px] opacity-70 block mb-1">Color 6</label>
-                        <input type="color" id="glowColor6" value="#8800ff" class="w-full h-8 rounded cursor-pointer" onchange="updateGlow()">
+                        <input type="color" id="glowColor6" value="#8800ff" onchange="updateGlow()">
                     </div>
                 </div>
                 
@@ -633,7 +911,7 @@
             <h3 class="text-xs font-bold uppercase tracking-wider opacity-50 mb-4">Current Activity</h3>
             
             <div class="space-y-3">
-                <select id="activityType" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-violet-500 focus:outline-none" onchange="updateActivity()">
+                <select id="activityType" onchange="updateActivity()">
                     <option value="gaming">Playing a Game</option>
                     <option value="listening">Listening to Spotify</option>
                     <option value="streaming">Streaming</option>
@@ -643,9 +921,9 @@
                     <option value="none">None</option>
                 </select>
                 
-                <input type="text" id="activityName" placeholder="Activity name..." class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-violet-500 focus:outline-none" value="Roblox">
+                <input type="text" id="activityName" placeholder="Activity name..." value="Roblox" oninput="updateActivity()">
                 
-                <input type="text" id="activityDetail" placeholder="Details..." class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-violet-500 focus:outline-none" value="9:51 elapsed">
+                <input type="text" id="activityDetail" placeholder="Details..." value="9:51 elapsed" oninput="updateActivity()">
                 
                 <div class="flex items-center justify-between">
                     <span class="text-sm">Show Song Widget</span>
@@ -674,7 +952,7 @@
                         <option value="steam">Steam</option>
                         <option value="website">Website</option>
                     </select>
-                    <input type="text" placeholder="URL..." class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-xs">
+                    <input type="text" placeholder="URL..." class="flex-1 text-xs">
                     <input type="color" class="w-8 h-8 rounded cursor-pointer" value="#dc2626">
                     <button onclick="removeLink(this)" class="text-red-400 hover:text-red-300"><i class="fas fa-trash"></i></button>
                 </div>
@@ -691,13 +969,13 @@
             
             <div class="space-y-3" id="networkList">
                 <div class="flex items-center gap-2">
-                    <input type="text" placeholder="Name..." class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-xs" value="AK ADMIN">
-                    <input type="text" placeholder="Image URL..." class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-xs">
+                    <input type="text" placeholder="Name..." class="flex-1 text-xs" value="AK ADMIN">
+                    <input type="text" placeholder="Image URL..." class="flex-1 text-xs">
                     <button onclick="removeNetwork(this)" class="text-red-400 hover:text-red-300"><i class="fas fa-trash"></i></button>
                 </div>
                 <div class="flex items-center gap-2">
-                    <input type="text" placeholder="Name..." class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-xs" value="SORA">
-                    <input type="text" placeholder="Image URL..." class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-xs">
+                    <input type="text" placeholder="Name..." class="flex-1 text-xs" value="SORA">
+                    <input type="text" placeholder="Image URL..." class="flex-1 text-xs">
                     <button onclick="removeNetwork(this)" class="text-red-400 hover:text-red-300"><i class="fas fa-trash"></i></button>
                 </div>
             </div>
@@ -714,7 +992,7 @@
             <div class="space-y-3">
                 <div>
                     <label class="text-xs mb-1 block opacity-70">Profile Views</label>
-                    <input type="number" id="viewCount" class="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-violet-500 focus:outline-none" value="892907">
+                    <input type="number" id="viewCount" value="892907" oninput="document.getElementById('viewDisplay').textContent = parseInt(this.value || 0).toLocaleString()">
                 </div>
                 
                 <div class="flex items-center justify-between">
@@ -733,7 +1011,7 @@
             <div class="space-y-3">
                 <div class="flex items-center justify-between">
                     <span class="text-sm">3D Tilt Effect</span>
-                    <div class="toggle active" id="tiltToggle" onclick="toggleSwitch(this)">
+                    <div class="toggle active" id="tiltToggle" onclick="toggleSwitch(this); tiltEnabled = this.classList.contains('active');">
                         <div class="toggle-dot"></div>
                     </div>
                 </div>
@@ -779,7 +1057,7 @@
 
     <!-- Main Profile Card -->
     <div class="card-container relative z-10 p-4" id="cardContainer">
-        <div class="profile-card w-[420px] max-w-[90vw] overflow-hidden" id="mainCard">
+        <div class="profile-card w-[420px] max-w-[90vw]" id="mainCard">
             
             <!-- Banner -->
             <div class="relative h-36 overflow-hidden">
@@ -849,10 +1127,10 @@
                 <div id="activitySection" class="card-content mb-5">
                     <div class="flex items-center gap-2 mb-3 text-[var(--accent-primary)] text-xs font-bold tracking-widest uppercase">
                         <div class="flex gap-0.5 items-end h-4">
-                            <div class="w-1 bg-current rounded-full animate-[bounce_1s_infinite]" style="height: 60%"></div>
-                            <div class="w-1 bg-current rounded-full animate-[bounce_1s_infinite_0.1s]" style="height: 100%"></div>
-                            <div class="w-1 bg-current rounded-full animate-[bounce_1s_infinite_0.2s]" style="height: 40%"></div>
-                            <div class="w-1 bg-current rounded-full animate-[bounce_1s_infinite_0.3s]" style="height: 80%"></div>
+                            <div class="w-1 bg-current rounded-full" style="height: 60%; animation: bounce 1s infinite"></div>
+                            <div class="w-1 bg-current rounded-full" style="height: 100%; animation: bounce 1s infinite 0.1s"></div>
+                            <div class="w-1 bg-current rounded-full" style="height: 40%; animation: bounce 1s infinite 0.2s"></div>
+                            <div class="w-1 bg-current rounded-full" style="height: 80%; animation: bounce 1s infinite 0.3s"></div>
                         </div>
                         <span id="activityLabel">Playing</span>
                     </div>
@@ -928,15 +1206,16 @@
         let glowEnabled = false;
         
         // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', function() {
             setupTilt();
             setupKeyboardShortcut();
             updateGlow();
+            updateBadgesDisplay();
         });
         
         // Keyboard Shortcut (Ctrl+Shift+A)
         function setupKeyboardShortcut() {
-            document.addEventListener('keydown', (e) => {
+            document.addEventListener('keydown', function(e) {
                 if (e.ctrlKey && e.shiftKey && e.key === 'A') {
                     e.preventDefault();
                     showLogin();
@@ -963,15 +1242,9 @@
             }
         }
         
-        // Allow Enter key to submit
-        document.getElementById('adminPassword')?.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') checkPassword();
-        });
-        
         function openAdmin() {
             document.getElementById('adminPanel').classList.add('open');
             document.getElementById('overlay').classList.remove('hidden');
-            syncAdminValues();
         }
         
         function closeAdmin() {
@@ -979,20 +1252,12 @@
             document.getElementById('overlay').classList.add('hidden');
         }
         
-        // Sync admin inputs
-        function syncAdminValues() {
-            document.getElementById('editName').value = document.getElementById('displayName').textContent;
-            document.getElementById('editUsername').value = document.getElementById('displayUsername').textContent;
-            document.getElementById('editPronouns').value = document.getElementById('displayPronouns').textContent;
-            document.getElementById('editBio').value = document.getElementById('displayBio').textContent;
-        }
-        
         // 3D Tilt Effect
         function setupTilt() {
             const container = document.getElementById('cardContainer');
             const card = document.getElementById('mainCard');
             
-            container.addEventListener('mousemove', (e) => {
+            container.addEventListener('mousemove', function(e) {
                 if (!tiltEnabled) return;
                 
                 const rect = card.getBoundingClientRect();
@@ -1002,12 +1267,21 @@
                 const rotateX = (y / (rect.height / 2)) * -10;
                 const rotateY = (x / (rect.width / 2)) * 10;
                 
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                card.style.transform = 'perspective(1000px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) scale3d(1.02, 1.02, 1.02)';
             });
             
-            container.addEventListener('mouseleave', () => {
+            container.addEventListener('mouseleave', function() {
                 card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
             });
+        }
+        
+        // Quick Updates
+        function updateText(id, value) {
+            document.getElementById(id).textContent = value;
+        }
+        
+        function updateImage(id, value) {
+            if (value) document.getElementById(id).src = value;
         }
         
         // Color Updates
@@ -1023,7 +1297,7 @@
             document.documentElement.style.setProperty('--bg-primary', bg);
             document.documentElement.style.setProperty('--text-primary', text);
             
-            document.getElementById('mainCard').style.boxShadow = `0 0 40px ${primary}40`;
+            document.getElementById('mainCard').style.boxShadow = '0 0 40px ' + primary + '40';
         }
         
         // Preset Themes
@@ -1063,23 +1337,23 @@
             let html = '';
             switch(style) {
                 case 'gradient':
-                    html = `<div class="absolute inset-0 bg-gradient-to-br from-zinc-900 via-black to-black"></div>
-                            <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-[var(--accent-primary)]/10 via-transparent to-transparent"></div>`;
+                    html = '<div style="position: absolute; inset: 0; background: linear-gradient(to bottom right, #18181b, #000, #000);"></div>' +
+                           '<div style="position: absolute; inset: 0; background: radial-gradient(circle at center, var(--accent-primary) 0%, transparent 70%); opacity: 0.1;"></div>';
                     break;
                 case 'solid':
-                    html = `<div class="absolute inset-0 bg-[var(--bg-primary)]"></div>`;
+                    html = '<div style="position: absolute; inset: 0; background: var(--bg-primary);"></div>';
                     break;
                 case 'aurora':
-                    html = `<div class="absolute inset-0 bg-[var(--bg-primary)]"></div>
-                            <div class="absolute inset-0 bg-gradient-to-r from-[var(--accent-primary)]/20 via-transparent to-[var(--accent-secondary)]/20 animate-pulse"></div>`;
+                    html = '<div style="position: absolute; inset: 0; background: var(--bg-primary);"></div>' +
+                           '<div style="position: absolute; inset: 0; background: linear-gradient(to right, var(--accent-primary) 20%, transparent, var(--accent-secondary) 20%); opacity: 0.2; animation: pulse 4s infinite;"></div>';
                     break;
                 case 'grid':
-                    html = `<div class="absolute inset-0 bg-[var(--bg-primary)]"></div>
-                            <div class="absolute inset-0" style="background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 50px 50px;"></div>`;
+                    html = '<div style="position: absolute; inset: 0; background: var(--bg-primary);"></div>' +
+                           '<div style="position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 50px 50px;"></div>';
                     break;
                 case 'particles':
-                    html = `<div class="absolute inset-0 bg-[var(--bg-primary)]"></div>
-                            <div class="absolute inset-0" id="particleContainer"></div>`;
+                    html = '<div style="position: absolute; inset: 0; background: var(--bg-primary);"></div>' +
+                           '<div id="particleContainer" style="position: absolute; inset: 0;"></div>';
                     setTimeout(createParticles, 100);
                     break;
             }
@@ -1088,10 +1362,9 @@
         
         function updateBgImage(url) {
             if (!url) return;
-            document.getElementById('dynamicBg').innerHTML = `
-                <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('${url}')"></div>
-                <div class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
-            `;
+            document.getElementById('dynamicBg').innerHTML = 
+                '<div style="position: absolute; inset: 0; background: url(' + url + ') center/cover no-repeat;"></div>' +
+                '<div style="position: absolute; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);"></div>';
         }
         
         // Toggle Glow Animation
@@ -1103,9 +1376,8 @@
                 card.classList.add('glow-animation');
             } else {
                 card.classList.remove('glow-animation');
-                // Reset to default shadow
-                const primary = getComputedStyle(document.documentElement).getPropertyValue('--accent-primary');
-                card.style.boxShadow = `0 0 40px ${primary}40`;
+                const primary = getComputedStyle(document.documentElement).getPropertyValue('--accent-primary').trim();
+                card.style.boxShadow = '0 0 40px ' + primary + '40';
             }
         }
         
@@ -1133,64 +1405,30 @@
             
             document.getElementById('glowSpeedVal').textContent = speed + 's';
             
-            // Update preview
             const preview = document.getElementById('glowPreview');
             if (preview) {
-                preview.style.animation = `glow-loop ${speed}s linear infinite`;
+                preview.style.animation = 'glow-loop ' + speed + 's linear infinite';
             }
         }
         
         // Toggle Switches
         function toggleSwitch(el) {
             el.classList.toggle('active');
-            if (el.id === 'tiltToggle') {
-                tiltEnabled = el.classList.contains('active');
-            }
         }
-        
-        // Live Text Updates
-        document.getElementById('editName')?.addEventListener('input', (e) => {
-            document.getElementById('displayName').textContent = e.target.value || 'wh3g';
-        });
-        
-        document.getElementById('editUsername')?.addEventListener('input', (e) => {
-            document.getElementById('displayUsername').textContent = e.target.value || '@wh3g';
-        });
-        
-        document.getElementById('editPronouns')?.addEventListener('input', (e) => {
-            document.getElementById('displayPronouns').textContent = e.target.value;
-        });
-        
-        document.getElementById('editBio')?.addEventListener('input', (e) => {
-            document.getElementById('displayBio').textContent = e.target.value;
-        });
-        
-        document.getElementById('editAvatar')?.addEventListener('change', (e) => {
-            if (e.target.value) document.getElementById('avatarImg').src = e.target.value;
-        });
-        
-        document.getElementById('editBanner')?.addEventListener('change', (e) => {
-            if (e.target.value) document.getElementById('bannerImg').src = e.target.value;
-        });
-        
-        document.getElementById('viewCount')?.addEventListener('input', (e) => {
-            document.getElementById('viewDisplay').textContent = parseInt(e.target.value || 0).toLocaleString();
-        });
         
         // PNG Badge Management
         function addBadge() {
             const list = document.getElementById('badgesList');
             const div = document.createElement('div');
             div.className = 'flex items-center gap-2 p-2 bg-white/5 rounded-lg';
-            div.innerHTML = `
-                <div class="w-10 h-10 rounded bg-black/30 flex items-center justify-center overflow-hidden">
-                    <img src="" class="w-8 h-8 object-contain badge-preview hidden">
-                    <i class="fas fa-image text-xs opacity-30"></i>
-                </div>
-                <input type="text" placeholder="Badge PNG URL..." class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-xs" onchange="updateBadgePreview(this)">
-                <input type="text" placeholder="Alt text..." class="w-20 bg-white/5 border border-white/10 rounded px-2 py-1 text-xs">
-                <button onclick="removeBadge(this)" class="text-red-400 hover:text-red-300 w-8"><i class="fas fa-trash"></i></button>
-            `;
+            div.innerHTML = 
+                '<div class="w-10 h-10 rounded bg-black/30 flex items-center justify-center overflow-hidden">' +
+                    '<img src="" class="w-8 h-8 object-contain badge-preview hidden">' +
+                    '<i class="fas fa-image text-xs opacity-30"></i>' +
+                '</div>' +
+                '<input type="text" placeholder="Badge PNG URL..." class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-xs" onchange="updateBadgePreview(this); updateBadgesDisplay();">' +
+                '<input type="text" placeholder="Alt text..." class="w-20 bg-white/5 border border-white/10 rounded px-2 py-1 text-xs">' +
+                '<button onclick="removeBadge(this)" class="text-red-400 hover:text-red-300 w-8"><i class="fas fa-trash"></i></button>';
             list.appendChild(div);
         }
         
@@ -1200,16 +1438,16 @@
         }
         
         function updateBadgePreview(input) {
-            const preview = input.parentElement.querySelector('.badge-preview');
-            const icon = input.parentElement.querySelector('.fa-image');
+            const container = input.parentElement.querySelector('.rounded');
+            const preview = container.querySelector('.badge-preview');
+            const icon = container.querySelector('.fa-image');
             
             if (input.value) {
                 preview.src = input.value;
                 preview.classList.remove('hidden');
                 if (icon) icon.classList.add('hidden');
+                preview.onload = function() { updateBadgesDisplay(); };
             }
-            
-            updateBadgesDisplay();
         }
         
         function updateBadgesDisplay() {
@@ -1218,9 +1456,10 @@
             
             container.innerHTML = '';
             
-            badgeInputs.forEach(badge => {
+            badgeInputs.forEach(function(badge) {
                 const url = badge.querySelector('input[type="text"]').value;
-                const alt = badge.querySelectorAll('input[type="text"]')[1]?.value || 'Badge';
+                const altInput = badge.querySelectorAll('input[type="text"]')[1];
+                const alt = altInput ? altInput.value : 'Badge';
                 
                 if (url) {
                     const img = document.createElement('img');
@@ -1267,7 +1506,7 @@
             document.getElementById('activitySection').style.display = 'block';
             document.getElementById('activityLabel').textContent = labels[type];
             document.getElementById('activityDisplay').textContent = name;
-            document.getElementById('activitySub').innerHTML = `<i class="fas ${icons[type]} text-xs"></i><span>${detail}</span>`;
+            document.getElementById('activitySub').innerHTML = '<i class="fas ' + icons[type] + ' text-xs"></i><span>' + detail + '</span>';
         }
         
         // Link Management
@@ -1275,23 +1514,22 @@
             const list = document.getElementById('linksList');
             const div = document.createElement('div');
             div.className = 'flex items-center gap-2';
-            div.innerHTML = `
-                <select class="link-icon bg-white/5 border border-white/10 rounded px-2 py-1 text-xs">
-                    <option value="instagram">Instagram</option>
-                    <option value="twitter">Twitter/X</option>
-                    <option value="youtube">YouTube</option>
-                    <option value="twitch">Twitch</option>
-                    <option value="github">GitHub</option>
-                    <option value="discord">Discord</option>
-                    <option value="tiktok">TikTok</option>
-                    <option value="spotify">Spotify</option>
-                    <option value="steam">Steam</option>
-                    <option value="website">Website</option>
-                </select>
-                <input type="text" placeholder="URL..." class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-xs">
-                <input type="color" class="w-8 h-8 rounded cursor-pointer" value="#dc2626">
-                <button onclick="removeLink(this)" class="text-red-400 hover:text-red-300"><i class="fas fa-trash"></i></button>
-            `;
+            div.innerHTML = 
+                '<select class="link-icon bg-white/5 border border-white/10 rounded px-2 py-1 text-xs">' +
+                    '<option value="instagram">Instagram</option>' +
+                    '<option value="twitter">Twitter/X</option>' +
+                    '<option value="youtube">YouTube</option>' +
+                    '<option value="twitch">Twitch</option>' +
+                    '<option value="github">GitHub</option>' +
+                    '<option value="discord">Discord</option>' +
+                    '<option value="tiktok">TikTok</option>' +
+                    '<option value="spotify">Spotify</option>' +
+                    '<option value="steam">Steam</option>' +
+                    '<option value="website">Website</option>' +
+                '</select>' +
+                '<input type="text" placeholder="URL..." class="flex-1 text-xs">' +
+                '<input type="color" class="w-8 h-8 rounded cursor-pointer" value="#dc2626">' +
+                '<button onclick="removeLink(this)" class="text-red-400 hover:text-red-300"><i class="fas fa-trash"></i></button>';
             list.appendChild(div);
         }
         
@@ -1304,11 +1542,10 @@
             const list = document.getElementById('networkList');
             const div = document.createElement('div');
             div.className = 'flex items-center gap-2';
-            div.innerHTML = `
-                <input type="text" placeholder="Name..." class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-xs">
-                <input type="text" placeholder="Image URL..." class="flex-1 bg-white/5 border border-white/10 rounded px-2 py-1 text-xs">
-                <button onclick="removeNetwork(this)" class="text-red-400 hover:text-red-300"><i class="fas fa-trash"></i></button>
-            `;
+            div.innerHTML = 
+                '<input type="text" placeholder="Name..." class="flex-1 text-xs">' +
+                '<input type="text" placeholder="Image URL..." class="flex-1 text-xs">' +
+                '<button onclick="removeNetwork(this)" class="text-red-400 hover:text-red-300"><i class="fas fa-trash"></i></button>';
             list.appendChild(div);
         }
         
@@ -1323,12 +1560,15 @@
             
             for (let i = 0; i < 50; i++) {
                 const p = document.createElement('div');
-                p.className = 'absolute rounded-full bg-[var(--accent-primary)] opacity-30';
+                p.style.position = 'absolute';
                 p.style.width = Math.random() * 4 + 2 + 'px';
                 p.style.height = p.style.width;
+                p.style.background = 'var(--accent-primary)';
+                p.style.borderRadius = '50%';
+                p.style.opacity = '0.3';
                 p.style.left = Math.random() * 100 + '%';
                 p.style.top = Math.random() * 100 + '%';
-                p.style.animation = `float ${5 + Math.random() * 10}s ease-in-out infinite`;
+                p.style.animation = 'float ' + (5 + Math.random() * 10) + 's ease-in-out infinite';
                 p.style.animationDelay = Math.random() * 5 + 's';
                 container.appendChild(p);
             }
@@ -1374,13 +1614,12 @@
             const input = document.createElement('input');
             input.type = 'file';
             input.accept = '.json';
-            input.onchange = (e) => {
+            input.onchange = function(e) {
                 const file = e.target.files[0];
                 const reader = new FileReader();
-                reader.onload = (event) => {
+                reader.onload = function(event) {
                     try {
                         const config = JSON.parse(event.target.result);
-                        // Apply config
                         if (config.colors) {
                             document.getElementById('colorPrimary').value = config.colors.primary;
                             document.getElementById('colorSecondary').value = config.colors.secondary;
